@@ -1,10 +1,13 @@
 import axios, { AxiosError } from 'axios'
+import { demoAdapter } from './demo-adapter'
 
 /** Single Axios instance. Point VITE_API_BASE_URL at JSON Server now, Laravel later. */
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001',
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
+  // Static hosting (GitHub Pages): no API server, so serve the seed data from the browser. See demo-adapter.ts.
+  ...(import.meta.env.VITE_DEMO_MODE === 'true' ? { adapter: demoAdapter } : {}),
 })
 
 // TODO(laravel): attach `Authorization: Bearer <token>` (Sanctum) here. Laravel must validate it on every request.

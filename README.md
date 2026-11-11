@@ -69,3 +69,7 @@ Foreign-tenant records must return 404 (or 403), never the data.
 ## Known limitations
 
 The website module is a placeholder. Logo upload, invitation emails, file attachments and real billing are out of scope. Dashboard and report aggregation runs in the browser. Booking reference numbering is not concurrency-safe until Laravel does it in a transaction. Hall and menu management screens are not built (they are seeded).
+
+## Hosting the demo on GitHub Pages
+
+Pages is static, so the workflow `.github/workflows/deploy.yml` builds with `VITE_DEMO_MODE=true`. In that mode `src/lib/demo-adapter.ts` answers API calls from a copy of `db.json` stored in each visitor's browser (localStorage key `hotelsaas.demo.db.v1`). Visitors can create and edit data, but nothing is shared between visitors and nothing is secure. Clear site data to reset. Repo Settings, Pages, Source: **GitHub Actions**, then push to `main`. Normal development (`npm run dev:all`) and the future Laravel build are unaffected because demo mode is off by default.
