@@ -38,7 +38,8 @@
     "tryAdjusting": "Try adjusting the search or filters.",
     "type": "Type",
     "view": "View",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "close": "Close"
   },
   "errors": {
     "title": "Something went wrong",
@@ -701,7 +702,8 @@
     "suspend": "Suspend",
     "activate": "Activate",
     "suspendConfirm": "Suspend this hotel? Its owner will not be able to sign in.",
-    "activateConfirm": "Activate this hotel again?"
+    "activateConfirm": "Activate this hotel again?",
+    "tempPassword": "Owner login created. Temporary password (shown only once, copy it now): {{password}}"
   },
   "users": {
     "subtitle": "All platform accounts",

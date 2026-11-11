@@ -1,17 +1,38 @@
+import { api } from '@/lib/axios'
 import { bookingService } from './bookings.service'
 import { inventoryService } from './inventory.service'
 import { employeeService, expenseService, incomeService, loanService, salaryService } from './resources.service'
 import { calcBookingTotals, calcLoan, calcSalary, isRevenueBooking, stockStatus, stockValue, sum } from '@/lib/domain'
 import type { DashboardStatistics } from '@/types'
 
+/** True on the GitHub Pages demo (VITE_DEMO_MODE=true): no server, so numbers are calculated in the browser. */
+const DEMO = import.meta.env.VITE_DEMO_MODE === 'true'
+
 const TODAY = () => new Date().toISOString().slice(0, 10)
 
 /**
- * Computed client-side from tenant-scoped data for the prototype.
- * TODO(laravel): GET /dashboard should compute these in SQL.
- * Definitions: "income" here = CASH RECEIVED from bookings + external income. "Booked revenue" is reported separately in Reports.
+ * Dashboard numbers for the hotel owner.
+ *
+ * LARAVEL MODE (default): GET /dashboard?year=2026. The server calculates everything
+ *   (hotel-saas-api/app/Services/DashboardService.php, same formulas as computeDashboardLocally below).
+ * DEMO MODE (GitHub Pages): computed in the browser from the demo data.
+ *
+ * @param year  the year of the yearly numbers and the chart (default: this year)
  */
 export async function getHotelDashboard(year = new Date().getFullYear()): Promise<DashboardStatistics> {
+  if (!DEMO) {
+    const { data } = await api.get<DashboardStatistics>('/dashboard', { params: { year } })
+    return data
+  }
+  return computeDashboardLocally(year)
+}
+
+/**
+ * DEMO MODE ONLY. Computes the dashboard in the browser from tenant-scoped data.
+ * Definitions: "income" = CASH RECEIVED from bookings + external income. "Booked revenue" is reported separately in Reports.
+ * Keep it identical to DashboardService.php; when the demo is no longer needed, delete this function.
+ */
+async function computeDashboardLocally(year: number): Promise<DashboardStatistics> {
   const [bookings, items, employees, expenses, income, loans, salaries] = await Promise.all([
     bookingService.getBookings(), inventoryService.getItems(), employeeService.getEmployees(),
     expenseService.getExpenses(), incomeService.getIncome(), loanService.getLoans(), salaryService.getPayments(),
