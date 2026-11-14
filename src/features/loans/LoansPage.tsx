@@ -30,8 +30,9 @@ export function LoansPage() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { type: 'borrowed', party: '', amount: 0, issueDate: new Date().toISOString().slice(0, 10), dueDate: '', notes: '' } })
   const addM = useMutation({ mutationFn: (v: Values) => loanService.createLoan({ ...v, repayments: [] }), onSuccess: async () => { await invalidate('loans'); toast.success(t('loans.created')); setAdding(false); reset() } })
   const repayM = useMutation({
-    mutationFn: () => loanService.updateLoan(repay!.id, { repayments: [...repay!.repayments, { date: new Date().toISOString().slice(0, 10), amount: Number(amt) }] }),
+    mutationFn: () => loanService.addRepayment(repay!, { date: new Date().toISOString().slice(0, 10), amount: Number(amt) }),
     onSuccess: async () => { await invalidate('loans'); toast.success(t('loans.repaid')); setRepay(null); setAmt('') },
+    onError: (e) => toast.error(e.message),
   })
   const delM = useMutation({ mutationFn: (id: string) => loanService.deleteLoan(id), onSuccess: async () => { await invalidate('loans'); toast.success(t('loans.deleted')); setDel(null) } })
   const outstandingOfRepay = repay ? calcLoan(repay).outstanding : 0

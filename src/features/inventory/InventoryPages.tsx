@@ -41,7 +41,7 @@ export function ItemsPage() {
   const spoilM = useMutation({
     mutationFn: () => inventoryService.recordSpoilage(spoil!.id, Number(spoilQty)),
     onSuccess: async () => { await invalidate('items', 'movements'); toast.success(t('inventory.spoilageRecorded')); setSpoil(null); setSpoilQty('') },
-    onError: (e) => toast.error(e instanceof AppError && e.message.startsWith('insufficient') ? t('inventory.insufficient', { item: spoil?.name ?? '' }) : t('errors.generic')),
+    onError: (e) => toast.error(e instanceof AppError && e.message.startsWith('insufficient') ? t('inventory.insufficient', { item: spoil?.name ?? '' }) : e.message),
   })
   const low = items.filter((i) => stockStatus(i) === 'low'); const out = items.filter((i) => stockStatus(i) === 'out')
 
@@ -198,7 +198,7 @@ export function StockInForm() {
   const { register, control, handleSubmit, setValue, formState: { errors } } = useForm<InValues>({ resolver: zodResolver(inSchema), defaultValues: { date: today(), supplier: '', reference: '', notes: '', lines: [{ itemId: '', quantity: 0, unitCost: 0 }] } })
   const { fields, append, remove } = useFieldArray({ control, name: 'lines' })
   const watched = useWatch({ control, name: 'lines' })
-  const m = useMutation({ mutationFn: (v: InValues) => inventoryService.stockIn(v), onSuccess: async () => { await invalidate('items', 'movements'); toast.success(t('inventory.purchaseSaved')); navigate('/hotel/inventory/stock-in') } })
+  const m = useMutation({ mutationFn: (v: InValues) => inventoryService.stockIn(v), onSuccess: async () => { await invalidate('items', 'movements'); toast.success(t('inventory.purchaseSaved')); navigate('/hotel/inventory/stock-in') }, onError: (e) => toast.error(e.message) })
   return (
     <>
       <PageHeader title={t('inventory.newPurchase')} subtitle={t('inventory.newPurchaseHint')} breadcrumbs={[{ label: t('nav.inventory'), to: '/hotel/inventory' }, { label: t('nav.stockIn'), to: '/hotel/inventory/stock-in' }, { label: t('inventory.newPurchase') }]} />
@@ -244,7 +244,7 @@ export function StockOutForm() {
   const m = useMutation({
     mutationFn: (v: OutValues) => inventoryService.stockOut({ date: v.date, reference: v.reference + (v.clientName ? ` - ${v.clientName}` : ''), notes: v.notes, lines: v.lines.map((l) => ({ itemId: l.itemId, quantity: l.quantity })) }),
     onSuccess: async () => { await invalidate('items', 'movements'); toast.success(t('inventory.hawalaSaved')); navigate('/hotel/inventory/stock-out') },
-    onError: (e) => { if (e instanceof AppError && e.message.startsWith('insufficient')) setError('lines', { message: 'validation.insufficientStock' }); else toast.error(t('errors.generic')) },
+    onError: (e) => { if (e instanceof AppError && e.message.startsWith('insufficient')) setError('lines', { message: 'validation.insufficientStock' }); else toast.error(e.message) },
   })
   const itemOf = (id?: string) => items.data?.find((x) => x.id === id)
   const cost = sum((watched ?? []).map((l) => (l.quantity || 0) * (itemOf(l.itemId)?.unitCost ?? 0)))

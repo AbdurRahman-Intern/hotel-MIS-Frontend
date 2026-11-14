@@ -40,7 +40,7 @@ export function HawalaPage() {
   const sendM = useMutation({
     mutationFn: () => inventoryService.stockOut({ date: new Date().toISOString().slice(0, 10), reference: `${t('hawala.refPrefix')} ${booking!.reference}`, bookingId: booking!.id, lines: issuable.map((l) => ({ itemId: l.item.id, quantity: l.required })) }),
     onSuccess: async () => { await invalidate('items', 'movements'); toast.success(t('hawala.sent', { count: issuable.length })); setConfirm(false) },
-    onError: (e) => toast.error(e instanceof AppError && e.message.startsWith('insufficient') ? t('inventory.insufficient', { item: e.message.split(':')[1] }) : t('errors.generic')),
+    onError: (e) => toast.error(e instanceof AppError && e.message.startsWith('insufficient') ? t('inventory.insufficient', { item: e.message.split(':')[1] }) : e.message),
   })
 
   const group = (title: string, rows: RequisitionLine[], tone: string, Icon: typeof Drumstick) => (

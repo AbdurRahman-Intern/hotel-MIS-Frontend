@@ -4,8 +4,8 @@ import { tokenStore } from './token'
 
 /** The ONE HTTP client used by every service. */
 export const api = axios.create({
-  // Laravel: http://localhost:8000/api  (set VITE_API_BASE_URL in .env, it must end with /api)
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api',
+  // Laravel: http://127.0.0.1:8000/api  (set VITE_API_BASE_URL in .env, it must end with /api)
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000/api',
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
   // GitHub Pages demo: no server, so serve the seed data from the browser. See demo-adapter.ts.

@@ -1,9 +1,10 @@
-import { AppError } from '@/lib/axios'
+import { api, AppError } from '@/lib/axios'
 import { tenantResource } from './tenant-resource'
 import type { InventoryItem, StockMovement } from '@/types'
 
-const items = tenantResource<InventoryItem>('inventoryItems', 'inv')
-const movements = tenantResource<StockMovement>('stockMovements', 'mv')
+const DEMO = import.meta.env.VITE_DEMO_MODE === 'true'
+const items = tenantResource<InventoryItem>(DEMO ? 'inventoryItems' : 'inventory-items', 'inv')
+const movements = tenantResource<StockMovement>(DEMO ? 'stockMovements' : 'stock-movements', 'mv')
 
 export interface MovementLine { itemId: string; quantity: number; unitCost?: number }
 
@@ -19,9 +20,12 @@ export const inventoryService = {
 
   /**
    * Stock-in (purchase). Increases quantity and may update the unit cost to the latest purchase price (prices follow the daily market rate).
-   * TODO(laravel): run movement + quantity update in one DB transaction.
    */
   async stockIn(input: { date: string; supplier: string; reference: string; notes?: string; lines: MovementLine[] }) {
+    if (!DEMO) {
+      await api.post('/stock-movements/in', input)
+      return
+    }
     for (const l of input.lines) {
       const item = await items.get(l.itemId)
       await movements.create({ itemId: l.itemId, type: 'in', quantity: l.quantity, unitCost: l.unitCost ?? item.unitCost, date: input.date, supplier: input.supplier, reference: input.reference, notes: input.notes })
@@ -34,6 +38,10 @@ export const inventoryService = {
    * Creating a booking never calls this: stock is only issued by an explicit stock-out / "Send to warehouse" action.
    */
   async stockOut(input: { date: string; reference: string; bookingId?: string; notes?: string; lines: MovementLine[] }) {
+    if (!DEMO) {
+      await api.post('/stock-movements/out', input)
+      return
+    }
     const loaded = await Promise.all(input.lines.map((l) => items.get(l.itemId)))
     input.lines.forEach((l, i) => {
       if (l.quantity > loaded[i].quantity) throw new AppError('validation', `insufficient:${loaded[i].name}`)
@@ -48,9 +56,13 @@ export const inventoryService = {
 
   /** Records spoiled quantity (removed from stock, tracked separately). */
   async recordSpoilage(itemId: string, quantity: number) {
+    if (!DEMO) {
+      await api.post('/stock-movements/spoilage', { itemId, quantity, date: today(), reference: 'Spoilage' })
+      return
+    }
     const item = await items.get(itemId)
     if (quantity > item.quantity) throw new AppError('validation', `insufficient:${item.name}`)
     await movements.create({ itemId, type: 'spoilage', quantity, unitCost: item.unitCost, date: today(), reference: 'Spoilage' })
-    return items.update(itemId, { quantity: item.quantity - quantity, spoiledQuantity: item.spoiledQuantity + quantity, updatedAt: today() })
+    await items.update(itemId, { quantity: item.quantity - quantity, spoiledQuantity: item.spoiledQuantity + quantity, updatedAt: today() })
   },
 }

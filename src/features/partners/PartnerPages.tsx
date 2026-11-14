@@ -119,7 +119,7 @@ export function PartnerDetailPage() {
   const m = useMutation({
     mutationFn: (v: TxValues) => {
       if (v.type === 'withdrawal' && c && v.amount > c.balance) throw new Error('over')
-      return partnerService.updatePartner(id, { transactions: [...x!.transactions, v] })
+      return partnerService.addTransaction(x!, v)
     },
     onSuccess: async () => { await invalidate('partners'); void q.refetch(); toast.success(t('partners.txSaved')); setOpen(false); reset() },
     onError: (e) => toast.error(e instanceof Error && e.message === 'over' ? t('validation.withdrawOver') : t('errors.generic')),
