@@ -12,6 +12,7 @@ import { BookingForm } from '@/features/bookings/BookingForm'
 import { BookingDetailPage } from '@/features/bookings/BookingDetailPage'
 import { CalendarPage } from '@/features/bookings/CalendarPage'
 import { HawalaPage } from '@/features/bookings/HawalaPage'
+import { MenusPage } from '@/features/menus/MenusPage'
 import { ItemForm, ItemsPage, StockInForm, StockInPage, StockOutForm, StockOutPage } from '@/features/inventory/InventoryPages'
 import { EmployeeDetailPage, EmployeeForm, EmployeesPage } from '@/features/employees/EmployeePages'
 import { SalariesPage } from '@/features/salaries/SalariesPage'
@@ -65,6 +66,7 @@ export const router = createBrowserRouter([
         { path: 'bookings/:id', element: <BookingDetailPage /> },
         { path: 'bookings/:id/edit', element: <BookingForm /> },
         { path: 'bookings/:id/hawala', element: <HawalaPage /> },
+        { path: 'menus', element: <MenusPage /> },
         { path: 'inventory', element: <ItemsPage /> },
         { path: 'inventory/new', element: <ItemForm /> },
         { path: 'inventory/:id/edit', element: <ItemForm /> },

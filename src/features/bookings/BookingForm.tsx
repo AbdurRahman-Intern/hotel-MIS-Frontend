@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { CheckCircle2, AlertTriangle, ArrowLeft, Info } from 'lucide-react'
+import { CheckCircle2, AlertTriangle, ArrowLeft, Copy, Info, Plus } from 'lucide-react'
 import { bookingService, type BookingInput } from '@/services/bookings.service'
 import { AppError } from '@/lib/axios'
 import { useBookings, useHalls, useInvalidate, useMenus } from '@/hooks/queries'
@@ -14,7 +14,8 @@ import { useFormat } from '@/hooks/useFormat'
 import { useAuth } from '@/stores/auth.store'
 import { calcBookingTotals } from '@/lib/domain'
 import { Button, DirIcon, ErrorState, Field, Input, PageHeader, QueryBoundary, SectionCard, Select, Textarea, Card } from '@/components/ui'
-import type { BookingStatus } from '@/types'
+import { MenuFormModal } from '@/features/menus/MenuFormModal'
+import type { BookingStatus, Menu } from '@/types'
 
 const num = (min = 0) => z.number('validation.number').min(min, 'validation.nonNegative')
 const schema = z.object({
@@ -56,6 +57,16 @@ export function BookingForm() {
   const safe = (n: unknown) => (typeof n === 'number' && Number.isFinite(n) ? n : 0)
   const totals = calcBookingTotals({ guestCount: safe(w.guestCount), foodPricePerPerson: safe(w.foodPricePerPerson), photographyPrice: safe(w.photographyPrice), decorationPrice: safe(w.decorationPrice), serviceCharge: safe(w.serviceCharge), otherCharges: safe(w.otherCharges), discount: safe(w.discount), advancePaid: safe(w.advancePaid), payments: existing.data?.payments })
   const menu = menus.data?.find((m) => m.id === w.menuId)
+  // Menu dialog opened from this form: a brand-new menu, or a copy customised for this customer.
+  const [menuDlg, setMenuDlg] = useState<{ nonce: number; custom: boolean } | null>(null)
+  // A menu saved from the dialog is selected as soon as it shows up in the menu list (the list refetches first).
+  const [pendingMenu, setPendingMenu] = useState<Menu | null>(null)
+  const pickMenu = (mm: Menu) => setPendingMenu(mm)
+  useEffect(() => {
+    if (pendingMenu && menus.data?.some((x) => x.id === pendingMenu.id)) {
+      setValue('menuId', pendingMenu.id, { shouldValidate: true }); setValue('foodPricePerPerson', pendingMenu.pricePerPerson, { shouldValidate: true }); setPendingMenu(null)
+    }
+  }, [pendingMenu, menus.data, setValue])
 
   const avail = useQuery({
     queryKey: ['hall-availability', tenantId, w.hallName, w.eventDate, w.shift, id, all.dataUpdatedAt],
@@ -128,6 +139,11 @@ export function BookingForm() {
                     </Select>
                   </Field>
                 </div>
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                  <Button variant="secondary" onClick={() => setMenuDlg({ nonce: Date.now(), custom: false })}><Plus className="size-4" />{t('menus.add')}</Button>
+                  {menu && <Button variant="secondary" onClick={() => setMenuDlg({ nonce: Date.now(), custom: true })}><Copy className="size-4" />{t('menus.customize')}</Button>}
+                  <Link to="/hotel/menus" className="text-brand-600 hover:underline">{t('menus.manage')}</Link>
+                </div>
                 <Field label={t('common.notes')} error={errors.notes?.message}><Textarea placeholder={t('bookings.notesPlaceholder')} maxLength={500} {...register('notes')} /></Field>
               </div>
             </SectionCard>
@@ -172,6 +188,8 @@ export function BookingForm() {
           </form>
         )}
       </QueryBoundary>
+      {menuDlg && <MenuFormModal key={menuDlg.nonce} open onClose={() => setMenuDlg(null)} onSaved={pickMenu}
+        prefill={menuDlg.custom && menu ? { name: `${menu.name} – ${w.clientName || t('menus.customer')}`, pricePerPerson: menu.pricePerPerson, ingredients: menu.ingredients } : undefined} />}
     </>
   )
 }

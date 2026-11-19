@@ -1,4 +1,4 @@
-import { Banknote, CalendarCheck, Globe, HandCoins, LayoutDashboard, Package, Receipt, Settings, FileBarChart, UserCog, Users, Wallet } from 'lucide-react'
+import { Banknote, CalendarCheck, Globe, HandCoins, LayoutDashboard, Package, Receipt, Settings, FileBarChart, UserCog, Users, UtensilsCrossed, Wallet } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { AppShell, type NavItem } from './AppShell'
 import { useOwnHotel } from '@/hooks/useOwnHotel'
@@ -6,6 +6,7 @@ import { useOwnHotel } from '@/hooks/useOwnHotel'
 const nav: NavItem[] = [
   { key: 'dashboard', to: '/hotel/dashboard', icon: LayoutDashboard },
   { key: 'bookings', to: '/hotel/bookings', icon: CalendarCheck, children: [{ key: 'allBookings', to: '/hotel/bookings' }, { key: 'addBooking', to: '/hotel/bookings/new' }, { key: 'calendar', to: '/hotel/bookings/calendar' }, { key: 'hawala', to: '/hotel/bookings/hawala' }] },
+  { key: 'menus', to: '/hotel/menus', icon: UtensilsCrossed },
   { key: 'inventory', to: '/hotel/inventory', icon: Package, children: [{ key: 'stockItems', to: '/hotel/inventory' }, { key: 'stockIn', to: '/hotel/inventory/stock-in' }, { key: 'stockOut', to: '/hotel/inventory/stock-out' }] },
   { key: 'employees', to: '/hotel/employees', icon: Users },
   { key: 'salaries', to: '/hotel/salaries', icon: Wallet },

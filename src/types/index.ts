@@ -2,7 +2,8 @@
 
 export type Role = 'super_admin' | 'hotel_owner'
 export type HotelStatus = 'active' | 'suspended'
-export type PlanId = 'starter' | 'professional' | 'enterprise'
+/** A plan's id. It was a fixed list of three; now the Super Admin can create plans, so any text id is valid. */
+export type PlanId = string
 
 export interface User {
   id: string
@@ -24,6 +25,16 @@ export interface Plan {
   name: string
   priceMonthly: number
   maxUsers: number
+}
+
+/** Platform-wide settings edited by the Super Admin (Laravel: GET/PATCH /platform/settings). */
+export interface PlatformSettings {
+  platformName: string
+  supportEmail: string
+  supportPhone: string
+  defaultCurrency: 'AFN' | 'USD'
+  defaultPlanId: PlanId
+  trialDays: number
 }
 
 export interface Hotel {

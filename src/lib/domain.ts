@@ -93,3 +93,13 @@ export function calcLoan(l: Loan): { repaid: number; outstanding: number; status
   const status: LoanStatus = outstanding === 0 ? 'settled' : repaid > 0 ? 'partial' : 'open'
   return { repaid, outstanding, status }
 }
+
+// ---------- Menus ----------
+/**
+ * Cost of food for ONE guest = sum of (quantity per person x warehouse unit cost).
+ * Used on the Menus page to show the hotel its margin: price per person - cost per person.
+ * Ingredients whose warehouse item was deleted are skipped.
+ */
+export function menuCost(ingredients: { inventoryItemId: string; perPerson: number }[], items: { id: string; unitCost: number }[]) {
+  return round2(sum(ingredients.map((g) => (items.find((i) => i.id === g.inventoryItemId)?.unitCost ?? 0) * (Number.isFinite(g.perPerson) ? g.perPerson : 0))))
+}

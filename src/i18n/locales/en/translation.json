@@ -131,7 +131,8 @@
     "settings": "Settings",
     "hotels": "Hotels",
     "users": "Users",
-    "plans": "Plans"
+    "plans": "Plans",
+    "menus": "Menus"
   },
   "status": {
     "draft": "Draft",
@@ -604,7 +605,19 @@
     "perMonth": "/ month",
     "maxUsers": "Up to {{count}} users",
     "hotelsOnPlan": "{{count}} hotels on this plan",
-    "note": "Plans are labels only for the demo; billing is out of scope."
+    "note": "Plans are labels for now; billing and user limits are not enforced yet.",
+    "add": "Add plan",
+    "edit": "Edit plan",
+    "name": "Plan name",
+    "price": "Price per month",
+    "maxUsersLabel": "Maximum users",
+    "created": "Plan created",
+    "updated": "Plan updated",
+    "deleted": "Plan deleted",
+    "deleteTitle": "Delete plan",
+    "deleteConfirm": "Delete the plan {{name}}? This cannot be undone.",
+    "inUse": "This plan is used by hotels or is the default plan. Move them to another plan first.",
+    "nameTaken": "A plan with this name already exists"
   },
   "salaries": {
     "title": "Salary payments",
@@ -675,7 +688,16 @@
     "prototypeConfig": "Prototype configuration",
     "authMode": "Authentication",
     "authModeValue": "Local mock accounts (JSON Server)",
-    "securityNote": "Frontend route guards are not a security boundary. The Laravel backend must authenticate every request and enforce roles and tenant isolation."
+    "securityNote": "Frontend route guards are not a security boundary. The Laravel backend must authenticate every request and enforce roles and tenant isolation.",
+    "settingsTitle": "Platform settings",
+    "platformName": "Platform name",
+    "supportEmail": "Support e-mail",
+    "supportPhone": "Support phone",
+    "defaultCurrency": "Default currency",
+    "defaultPlan": "Default plan",
+    "trialDays": "Trial days",
+    "trialDaysHint": "Free trial length for new hotels",
+    "settingsSaved": "Settings saved"
   },
   "hotels": {
     "title": "Hotels",
@@ -703,7 +725,20 @@
     "activate": "Activate",
     "suspendConfirm": "Suspend this hotel? Its owner will not be able to sign in.",
     "activateConfirm": "Activate this hotel again?",
-    "tempPassword": "Owner login created. Temporary password (shown only once, copy it now): {{password}}"
+    "tempPassword": "Owner login created. Temporary password (shown only once, copy it now): {{password}}",
+    "delete": "Delete hotel",
+    "deleteTitle": "Delete hotel permanently",
+    "deleteWarning": "This permanently deletes the hotel, its owner login and ALL its data (bookings, stock, staff, finances). It cannot be undone.",
+    "deleteType": "Type the hotel name {{name}} to confirm",
+    "deleted": "Hotel deleted",
+    "suspendFirst": "Suspend the hotel before deleting it.",
+    "editOwner": "Edit owner",
+    "ownerUpdated": "Owner account updated",
+    "resetPassword": "Reset password",
+    "resetConfirm": "Create a new temporary password for {{name}}? The old password stops working and the owner is logged out everywhere.",
+    "passwordReset": "Password reset. New temporary password (shown only once, copy it now): {{password}}",
+    "ownerLoginNote": "The e-mail is the owner's login. Tell the owner if you change it.",
+    "ownerAccount": "Owner account"
   },
   "users": {
     "subtitle": "All platform accounts",
@@ -733,5 +768,39 @@
     "owingHint": "Largest balances first",
     "noOwing": "No outstanding balances",
     "upcoming": "Upcoming events"
+  },
+  "menus": {
+    "title": "Menus",
+    "subtitle": "Create the food menus you offer. Each booking picks one, and its recipe drives the warehouse requisition.",
+    "add": "New menu",
+    "edit": "Edit menu",
+    "name": "Menu name",
+    "namePlaceholder": "e.g. Royal Kabuli Menu",
+    "pricePerPerson": "Price per person",
+    "ingredients": "Recipe (per guest)",
+    "addIngredient": "Add ingredient",
+    "perPerson": "Per person",
+    "costPerPerson": "Food cost / person",
+    "margin": "Margin / person",
+    "usedBy": "Used by",
+    "duplicate": "Duplicate",
+    "copy": "copy",
+    "deleteTitle": "Delete menu",
+    "deleteConfirm": "Delete the menu \"{{name}}\"? This can not be undone.",
+    "inUse": "This menu is used by bookings and can not be deleted.",
+    "created": "Menu created",
+    "updated": "Menu updated",
+    "deleted": "Menu deleted",
+    "nameTaken": "A menu with this name already exists",
+    "needIngredient": "Add at least one ingredient",
+    "duplicateItem": "Each ingredient can be used only once",
+    "qtyPositive": "Must be more than 0",
+    "usedWarning_one": "{{count}} booking uses this menu. Changing the recipe changes its warehouse requisition (hawala).",
+    "usedWarning_other": "{{count}} bookings use this menu. Changing the recipe changes their warehouse requisition (hawala).",
+    "empty": "No menus yet. Create your first menu.",
+    "customize": "Customize for this customer",
+    "manage": "Manage menus",
+    "noItems": "Add items in the warehouse first, then build the recipe.",
+    "customer": "customer"
   }
 }
