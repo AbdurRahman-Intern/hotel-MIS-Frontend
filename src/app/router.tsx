@@ -22,7 +22,7 @@ import { IncomePage } from '@/features/income/IncomePage'
 import { ReportsPage } from '@/features/reports/ReportsPage'
 import { HotelSettingsPage } from '@/features/settings/HotelSettingsPage'
 import { WebsitePage } from '@/features/website/WebsitePage'
-
+import { HallsPage, MenusPage } from '@/features/catalog/CatalogPages'
 function Root() {
   const user = useAuth((s) => s.user)
   return <Navigate to={user ? homeFor(user.role) : '/login'} replace />
@@ -89,6 +89,8 @@ export const router = createBrowserRouter([
         { path: 'reports', element: <ReportsPage /> },
         { path: 'website', element: <WebsitePage /> },
         { path: 'settings', element: <HotelSettingsPage /> },
+        { path: 'halls', element: <HallsPage /> },
+        { path: 'menus', element: <MenusPage /> },
       ],
     }],
   },

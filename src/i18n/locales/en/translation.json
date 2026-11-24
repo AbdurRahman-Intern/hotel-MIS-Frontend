@@ -110,6 +110,8 @@
     "hotel_owner": "Hotel Owner"
   },
   "nav": {
+    "halls": "Hall Management",
+     "menus": "Menu Management",
     "dashboard": "Dashboard",
     "bookings": "Bookings",
     "allBookings": "All bookings",
@@ -704,6 +706,7 @@
     "suspendConfirm": "Suspend this hotel? Its owner will not be able to sign in.",
     "activateConfirm": "Activate this hotel again?",
     "tempPassword": "Owner login created. Temporary password (shown only once, copy it now): {{password}}"
+   
   },
   "users": {
     "subtitle": "All platform accounts",
@@ -733,5 +736,37 @@
     "owingHint": "Largest balances first",
     "noOwing": "No outstanding balances",
     "upcoming": "Upcoming events"
-  }
+  },
+  
+"catalog": {
+  "halls": "Hall Management",
+  "hallsSubtitle": "Create, edit and manage halls available for bookings.",
+  "addHall": "Add hall",
+  "editHall": "Edit hall",
+  "hallName": "Hall name",
+  "capacity": "Guest capacity",
+  "noHalls": "No halls created yet",
+  "deleteHallConfirm": "Delete this hall? Halls already used by bookings may be protected by the server.",
+  "menus": "Menu Management",
+  "menusSubtitle": "Manage menu prices and ingredient requirements per guest.",
+  "addMenu": "Add menu",
+  "editMenu": "Edit menu",
+  "menuName": "Menu name",
+  "pricePerPerson": "Price per guest",
+  "recipe": "Recipe ingredients",
+  "recipeHint": "Quantities are per guest, in each inventory item's unit.",
+  "addIngredient": "Add ingredient",
+  "noIngredients": "No ingredients entered yet",
+  "stockItem": "Inventory item",
+  "perGuest": "Quantity per guest",
+  "noMenus": "No menus created yet",
+  "deleteMenuConfirm": "Delete this menu? Menus used by bookings may be protected by the server.",
+  "saved": "Saved successfully",
+  "deleted": "Deleted successfully",
+  "invalidHall": "Enter a hall name and a positive whole-number capacity.",
+  "invalidMenu": "Enter a menu name and a non-negative price.",
+  "invalidIngredient": "Each ingredient needs a stock item and a quantity greater than zero.",
+  "duplicateIngredient": "A stock item can only be added once to a recipe."
+}
+
 }

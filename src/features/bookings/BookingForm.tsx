@@ -122,6 +122,7 @@ export function BookingForm() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   {field('guestCount', t('bookings.guestCount'), true, { number: true })}
+            
                   <Field label={t('bookings.menu')} required error={errors.menuId?.message}>
                     <Select {...register('menuId', { onChange: (e) => { const mm = menus.data?.find((x) => x.id === e.target.value); if (mm) setValue('foodPricePerPerson', mm.pricePerPerson, { shouldValidate: true }) } })}>
                       <option value="">{t('common.select')}</option>{menus.data?.map((mm) => <option key={mm.id} value={mm.id}>{mm.name} ({money(mm.pricePerPerson)})</option>)}
@@ -141,6 +142,7 @@ export function BookingForm() {
                 {field('advancePaid', t('bookings.advancePayment'), false, { number: true })}
                 {field('discount', t('bookings.discount'), false, { number: true })}
                 {field('otherCharges', t('bookings.otherCharges'), false, { number: true })}
+               
                 {editing && <Field label={t('common.status')}><Select {...register('status')}>{['draft', 'pending', 'confirmed', 'completed'].map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}</Select></Field>}
               </div>
             </SectionCard>
