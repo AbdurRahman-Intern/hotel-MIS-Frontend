@@ -1,4 +1,4 @@
-import { Banknote, CalendarCheck, Globe, HandCoins, LayoutDashboard, Package, Receipt, Settings, FileBarChart, UserCog, Users, UtensilsCrossed, Wallet } from 'lucide-react'
+import { Banknote, CalendarCheck, Globe, HandCoins, LayoutDashboard, Package, Receipt, Settings, FileBarChart, UserCog, Users, Wallet , Building2, UtensilsCrossed } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { AppShell, type NavItem } from './AppShell'
 import { useOwnHotel } from '@/hooks/useOwnHotel'
@@ -17,6 +17,8 @@ const nav: NavItem[] = [
   { key: 'reports', to: '/hotel/reports', icon: FileBarChart },
   { key: 'website', to: '/hotel/website', icon: Globe },
   { key: 'settings', to: '/hotel/settings', icon: Settings },
+  { key: 'halls',to: '/hotel/halls', icon: Building2},
+  { key: 'menus', to: '/hotel/menus', icon: UtensilsCrossed},
 ]
 
 export function HotelOwnerLayout() {

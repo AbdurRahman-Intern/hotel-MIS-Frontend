@@ -64,6 +64,7 @@ export function HotelSettingsPage() {
             </div>
             <div className="mt-5 flex justify-end"><Button type="submit" loading={m.isPending} disabled={!isDirty}>{t('common.save')}</Button></div>
           </SectionCard>
+            
         </form>
       </QueryBoundary>
     </>

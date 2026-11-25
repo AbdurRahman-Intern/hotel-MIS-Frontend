@@ -110,6 +110,8 @@
     "hotel_owner": "Hotel Owner"
   },
   "nav": {
+    "halls": "Hall Management",
+     "menus": "Menu Management",
     "dashboard": "Dashboard",
     "bookings": "Bookings",
     "allBookings": "All bookings",
