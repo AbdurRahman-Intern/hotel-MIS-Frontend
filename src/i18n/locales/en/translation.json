@@ -111,7 +111,7 @@
   },
   "nav": {
     "halls": "Hall Management",
-     "menus": "Menu Management",
+    "menus": "Menus",
     "dashboard": "Dashboard",
     "bookings": "Bookings",
     "allBookings": "All bookings",
@@ -133,8 +133,7 @@
     "settings": "Settings",
     "hotels": "Hotels",
     "users": "Users",
-    "plans": "Plans",
-    "menus": "Menus"
+    "plans": "Plans"
   },
   "status": {
     "draft": "Draft",
@@ -804,5 +803,22 @@
     "manage": "Manage menus",
     "noItems": "Add items in the warehouse first, then build the recipe.",
     "customer": "customer"
+  },
+  "profit": {
+    "title": "Profit / loss",
+    "subtitle": "Income minus expenses, salaries and stock purchases. Red means a loss.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "month": "Month",
+    "forMonth": "{{month}} {{year}}",
+    "forYear": "Whole year {{year}}",
+    "profit": "Profit",
+    "loss": "Loss",
+    "income": "Income (cash received)",
+    "expenses": "Expenses",
+    "salaries": "Salaries paid",
+    "profitLoss": "Profit / loss",
+    "formula": "Profit = income − expenses − salaries − stock purchases. Stock issued from the warehouse is not counted again. Loan repayments and partner withdrawals are not counted.",
+    "stock": "Stock purchases"
   }
 }

@@ -253,6 +253,14 @@ export interface DashboardStatistics {
   yearIncome: number
   monthExpenses: number
   yearExpenses: number
+  /** Net salaries paid. Profit = income - expenses - salaries - stock purchases. A negative profit is a LOSS. */
+  monthSalaries: number
+  yearSalaries: number
+  /** Stock bought (stock-in): quantity x unit cost. */
+  monthStock: number
+  yearStock: number
+  monthProfit: number
+  yearProfit: number
   monthWeddings: number
   yearWeddings: number
   totalLoanGiven: number
@@ -260,7 +268,7 @@ export interface DashboardStatistics {
   stockValue: number
   totalEmployees: number
   salaryPaidThisMonth: number
-  monthly: { month: string; income: number; expenses: number; weddings: number }[]
+  monthly: { month: string; income: number; expenses: number; salaries: number; stock: number; profit: number; weddings: number }[]
   recentBookings: Booking[]
   lowStock: InventoryItem[]
   upcoming: Booking[]

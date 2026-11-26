@@ -11,6 +11,7 @@ import { useOwnHotel } from '@/hooks/useOwnHotel'
 import { calcBookingTotals } from '@/lib/domain'
 import { LinkButton, PageHeader, QueryBoundary, SectionCard, Select, StatCard, StatusBadge, TableShell, EmptyState } from '@/components/ui'
 import { shortMonth } from '@/lib/formatters'
+import { ProfitLossCard } from './ProfitLossCard'
 
 const COLORS = ['#1f5bf0', '#8b5cf6', '#ec4899', '#f59e0b', '#94a3b8', '#0f9d8a']
 
@@ -53,6 +54,8 @@ export function HotelDashboard() {
               <StatCard icon={Users} tone="amber" label={t('dashboard.employees')} value={num(d.totalEmployees)} />
               <StatCard icon={Wallet} tone="green" label={t('dashboard.salaryPaid')} value={money(d.salaryPaidThisMonth)} />
             </div>
+
+            <ProfitLossCard d={d} year={year} />
 
             <div className="grid gap-5 xl:grid-cols-2">
               <SectionCard title={t('dashboard.incomeVsExpenses')} subtitle={t('dashboard.incomeVsExpensesHint', { year })}>

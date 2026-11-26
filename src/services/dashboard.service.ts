@@ -29,13 +29,13 @@ export async function getHotelDashboard(year = new Date().getFullYear()): Promis
 
 /**
  * DEMO MODE ONLY. Computes the dashboard in the browser from tenant-scoped data.
- * Definitions: "income" = CASH RECEIVED from bookings + external income. "Booked revenue" is reported separately in Reports.
+ * Definitions: "income" = CASH RECEIVED from bookings + external income. "profit" = income - expenses - paid salaries - stock purchases (negative = loss). "Booked revenue" is reported separately in Reports.
  * Keep it identical to DashboardService.php; when the demo is no longer needed, delete this function.
  */
 async function computeDashboardLocally(year: number): Promise<DashboardStatistics> {
-  const [bookings, items, employees, expenses, income, loans, salaries] = await Promise.all([
+  const [bookings, items, employees, expenses, income, loans, salaries, movements] = await Promise.all([
     bookingService.getBookings(), inventoryService.getItems(), employeeService.getEmployees(),
-    expenseService.getExpenses(), incomeService.getIncome(), loanService.getLoans(), salaryService.getPayments(),
+    expenseService.getExpenses(), incomeService.getIncome(), loanService.getLoans(), salaryService.getPayments(), inventoryService.getMovements(),
   ])
   const today = TODAY()
   const ym = today.slice(0, 7)
@@ -46,10 +46,14 @@ async function computeDashboardLocally(year: number): Promise<DashboardStatistic
     const mb = live.filter((b) => b.eventDate.startsWith(key))
     const cash = sum(mb.map((b) => calcBookingTotals(b).received)) + sum(income.filter((x) => x.date.startsWith(key)).map((x) => x.amount))
     const spent = sum(expenses.filter((x) => x.date.startsWith(key)).map((x) => x.amount))
-    return { month: key, income: cash, expenses: spent, weddings: mb.length }
+    // Net salaries paid for this month. Profit = income - expenses - salaries (negative = loss).
+    const paid = sum(salaries.filter((s) => s.status === 'paid' && s.month === key).map((s) => calcSalary(s).net))
+    // Stock bought this month (stock-in only: quantity x unit cost). Stock-out and spoilage are not costs again.
+    const stock = sum(movements.filter((m) => m.type === 'in' && m.date.startsWith(key)).map((m) => m.quantity * m.unitCost))
+    return { month: key, income: cash, expenses: spent, salaries: paid, stock, profit: cash - spent - paid - stock, weddings: mb.length }
   })
 
-  const monthRow = monthly.find((m) => m.month === ym) ?? { income: 0, expenses: 0, weddings: 0 }
+  const monthRow = monthly.find((m) => m.month === ym) ?? { income: 0, expenses: 0, salaries: 0, stock: 0, profit: 0, weddings: 0 }
   const upcoming = live.filter((b) => b.eventDate >= today).sort((a, b) => a.eventDate.localeCompare(b.eventDate))
   const types = new Map<string, number>()
   live.filter((b) => b.eventDate.startsWith(String(year))).forEach((b) => types.set(b.eventType, (types.get(b.eventType) ?? 0) + 1))
@@ -64,6 +68,12 @@ async function computeDashboardLocally(year: number): Promise<DashboardStatistic
     yearIncome: sum(monthly.map((m) => m.income)),
     monthExpenses: monthRow.expenses,
     yearExpenses: sum(monthly.map((m) => m.expenses)),
+    monthSalaries: monthRow.salaries,
+    monthStock: monthRow.stock,
+    yearStock: sum(monthly.map((m) => m.stock)),
+    yearSalaries: sum(monthly.map((m) => m.salaries)),
+    monthProfit: monthRow.profit,
+    yearProfit: sum(monthly.map((m) => m.profit)),
     monthWeddings: monthRow.weddings,
     yearWeddings: sum(monthly.map((m) => m.weddings)),
     totalLoanGiven: sum(loanCalc.filter((x) => x.l.type === 'lent').map((x) => x.c.outstanding)),

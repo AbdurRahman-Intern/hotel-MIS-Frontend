@@ -12,7 +12,7 @@ import { BookingForm } from '@/features/bookings/BookingForm'
 import { BookingDetailPage } from '@/features/bookings/BookingDetailPage'
 import { CalendarPage } from '@/features/bookings/CalendarPage'
 import { HawalaPage } from '@/features/bookings/HawalaPage'
-// import { MenusPage } from '@/features/menus/MenusPage'
+import { MenusPage } from '@/features/menus/MenusPage'
 import { ItemForm, ItemsPage, StockInForm, StockInPage, StockOutForm, StockOutPage } from '@/features/inventory/InventoryPages'
 import { EmployeeDetailPage, EmployeeForm, EmployeesPage } from '@/features/employees/EmployeePages'
 import { SalariesPage } from '@/features/salaries/SalariesPage'
@@ -23,7 +23,7 @@ import { IncomePage } from '@/features/income/IncomePage'
 import { ReportsPage } from '@/features/reports/ReportsPage'
 import { HotelSettingsPage } from '@/features/settings/HotelSettingsPage'
 import { WebsitePage } from '@/features/website/WebsitePage'
-import { HallsPage, MenusPage } from '@/features/catalog/CatalogPages'
+import { HallsPage } from '@/features/catalog/CatalogPages'
 function Root() {
   const user = useAuth((s) => s.user)
   return <Navigate to={user ? homeFor(user.role) : '/login'} replace />
@@ -92,7 +92,6 @@ export const router = createBrowserRouter([
         { path: 'website', element: <WebsitePage /> },
         { path: 'settings', element: <HotelSettingsPage /> },
         { path: 'halls', element: <HallsPage /> },
-        { path: 'menus', element: <MenusPage /> },
       ],
     }],
   },

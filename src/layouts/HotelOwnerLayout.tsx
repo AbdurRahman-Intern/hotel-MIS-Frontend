@@ -31,6 +31,7 @@ const nav: NavItem[] = [
       { key: "hawala", to: "/hotel/bookings/hawala" },
     ],
   },
+  { key: "halls", to: "/hotel/halls", icon: Building2 },
   { key: "menus", to: "/hotel/menus", icon: UtensilsCrossed },
   {
     key: "inventory",
@@ -51,8 +52,6 @@ const nav: NavItem[] = [
   { key: "reports", to: "/hotel/reports", icon: FileBarChart },
   { key: "website", to: "/hotel/website", icon: Globe },
   { key: "settings", to: "/hotel/settings", icon: Settings },
-  { key: "halls", to: "/hotel/halls", icon: Building2 },
-  // { key: 'menus', to: '/hotel/menus', icon: UtensilsCrossed},
 ];
 
 export function HotelOwnerLayout() {
